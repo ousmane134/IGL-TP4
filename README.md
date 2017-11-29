@@ -1,1 +1,1 @@
-# IGL-TP4
+Dans le cadre du TP4 d'IGL601, nous avons décidé d'utiliser le TP2 d'IFT287.

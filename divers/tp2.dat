@@ -1,0 +1,47 @@
+ajoutParticipant John Smith 25 01020304
+ajoutParticipant Harry Potter 12 05321485
+ajoutParticipant Ron Weasley 12 05325415
+ajoutParticipant Drago Malfois 12 05947254
+supprimerParticipant 01020304
+ajoutLigue Quidditch
+ajoutLigue Soccer2A
+supprimerLigue Soccer2A
+ajoutEquipe Quidditch Griffondor 7
+ajoutEquipe Quidditch Serpentard 7
+ajoutEquipe Quidditch Poufsouffle 7
+ajoutJoueur Griffondor 05321485
+ajoutJoueur Griffondor 05325415
+ajoutJoueur Griffondor 05947254
+supprimerJoueur Griffondor 05947254
+ajoutJoueur Serpentard 05947254
+ajoutResultat Griffondor 150 Serpentard 60
+afficheEquipe Griffondor
+afficheLigue Quidditch
+afficheEquipes
+quitter
+
+
+
+
+
+stmtExisteParticipant = cx.getConnection().prepareStatement("SELECT matricule, age, nom, prenom FROM Participant WHERE matricule = ?");
+    	stmtAjoutParticipant = cx.getConnection().prepareStatement("INSERT INTO Participant (matricule, age, nom, prenom) VALUES (?,?,?,?)");
+        stmtSupprimerParticipant = cx.getConnection().prepareStatement("DELETE FROM Participant WHERE matricule = ? AND NOT EXISTS (SELECT * FROM Joueur WHERE matricule = ?)");
+
+        stmtExisteJoueur = cx.getConnection().prepareStatement("SELECT nomEquipe, matricule FROM Joueur WHERE nomEquipe = ? AND matricule = ?");
+        stmtAjoutJoueur = cx.getConnection().prepareStatement("INSERT INTO Joueur (nomEquipe, matricule) VALUES (?,?)");
+        stmtSupprimerJoueur = cx.getConnection().prepareStatement("DELETE FROM Joueur WHERE nomEquipe = ? AND matricule = ?");
+        stmtAfficherEquipe = cx.getConnection().prepareStatement("SELECT * FROM Joueur");
+
+        stmtExisteEquipe = cx.getConnection().prepareStatement("SELECT nomEquipe, NbreJoueurMax, nomLigue FROM Equipe WHERE nomEquipe = ?");
+        stmtAjoutEquipe = cx.getConnection().prepareStatement("INSERT INTO Equipe (nomEquipe, NbreJoueurMax, nomLigue) VALUES (?,?,?)");
+        stmtAfficherEquipes = cx.getConnection().prepareStatement("SELECT * FROM Equipe");
+        
+        stmtExisteLigue = cx.getConnection().prepareStatement("SELECT nomLigue FROM Ligue WHERE nomLigue = ?");
+        stmtAjoutLigue = cx.getConnection().prepareStatement("INSERT INTO Ligue (nomLigue) VALUES (?)");
+        stmtAfficherLigue = cx.getConnection().prepareStatement("SELECT * FROM Ligue");
+        stmtSupprimerLigue= cx.getConnection().prepareStatement("WITH{SELECT Joueur.matricule FROM Equipe JOIN Joueur WHERE Equipe.nomLigue = ?} DELETE FROM Ligue WHERE nomLigue = ? AND NOT EXISTS(SELECT * FROM JoueurLigue)");
+        
+        stmtExisteResultat = cx.getConnection().prepareStatement("SELECT Id, scoreEquipeA, scoreEquipeB, nomEquipeA, nomEquipeB FROM Resultat WHERE Id = ?" );
+        stmtAjoutResultat = cx.getConnection().prepareStatement("INSERT INTO Resultat (Id, scoreEquipeA, scoreEquipeB, nomEquipeA, nomEquipeB) VALUES (?,?,?,?,?)");
+    }
